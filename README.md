@@ -1,3 +1,11 @@
+:heart::heart::heart::heart::heart::heart::heart::heart::heart::heart::heart::heart::heart::heart::heart:   
+:heart::princess::princess::princess::princess::princess:......................:princess::princess::princess::princess::princess::heart:   
+:heart::princess:..................................................:princess:.............................:heart:       
+:heart::princess::princess::princess:....................................:princess:.............................:heart:            
+:heart::princess:..................................................:princess:.............................:heart:  
+:heart::princess:..................................................:princess:.............................:heart:  
+:heart::princess:..................................................:princess::princess::princess::princess::princess::heart:   
+:heart::heart::heart::heart::heart::heart::heart::heart::heart::heart::heart::heart::heart::heart::heart:    
 # CARA-elixir-phoenix
 Découverte du langage Elixir &amp; de son framework web Phoenix !
 
