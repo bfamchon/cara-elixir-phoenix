@@ -1,10 +1,18 @@
 # CARA-elixir-phoenix
 Découverte du langage Elixir &amp; de son framework web Phoenix !
 
-# Description du projet
+# Description du projet :
+
+Et pour ce projet, nous allons mettre en place un tchat, pour les plus fainéants d'entre vous, vous pouvez clone [discord]{https://github.com/discordapp). Pour les plus courageux, ca se passe plus bas ! :grinning:
+
+Mais tout d'abord voici les quelques users Stories que nous voulons mettre en place
+*TODO
+*TODO
+*TODO
+*TODO
 
 # Mise en place des outils :
-
+Pour commencer le projet, il faudra mettre en place les outils nécéssaires aux développeurs.
 ## Mettre en place l'environnement de travail
 ### Intaller Elixir & Phoenix
 Nous allons commencer par installer la [machine Erlang](http://erlang.org/doc/index.html) et le langage [Elixir](https://elixir-lang.org/), référez vous [ici](https://elixir-lang.org/install.html). Dès l'installation terminé, lancer la commande mix -v afin de vous assurer du bon fonctionnement de celle-ci. Vous devriez voir deux choses, la version de la machine Erlang et la version d'elixir (à l'heure où j'écris ces lignes 1.5.3).
@@ -52,37 +60,36 @@ Une application distribué est toujours découpé de la façon suivante :
 Todo : schéma Application -> repository contenant registry -> supervisor(s) -> GenServer(s)
 
 ## Créer les process
-A tout moment n'hésitez pas à lancer votre application et regarder le supervision tree à l'observeur (onglet application):
-```
-//Démarre l'application compilé en mode interactif
+N'hésitez pas à lancer votre application et regarder le supervision tree à l'observeur (onglet application):
+```bash
+#Démarre l'application compilé en mode interactif
 iex -S mix 
-//Démarre l'observeur permettant de monitorer l'application
+#Démarre l'observeur permettant de monitorer l'application
 :observer.start
 ```
 
-### Une [application](https://hexdocs.pm/elixir/Application.html#content)
-Première étape, ajouter l'application permettant de lancer le serveur.
-
-```
-defmodule MyApp.Application do
-  use Application
-
-  def start(_type, _args) do
-    import Supervisor.Spec, warn: false
-
-    children = [
-      supervisor(MyApp.Supervisor, [])
-    ]
-
-    opts = [strategy: :one_for_one]
-    Supervisor.start_link(children, opts)
+### Un [genServer](https://hexdocs.pm/elixir/GenServer.html)
+Ci-dessous le code nécéssaire à la création d'un genServer, la méthode `start_link` est nécéssaire, les méthodes `handle_call` permettent de recevoir des messages et faire des traitements en conséquence.
+```elixir
+defmodule MyApp.Worker do
+  use GenServer
+  
+  def start_link(name, options \\ []) do #Méthode lancée au démarrage du processus
+    GenServer.start_link(__MODULE__, %__MODULE__{name: name}, options)
   end
-end
+  
+  #handle_cast -> Synchrone
+  def handle_call({:MessageTraitementA, Param1}, _pid, state) do #Méthode lancée lors de la réception d'un message avec comme identifiant :MessageTraitementA
+    #Code métier
+  end
+  #handle_cast -> Asynchrone
+  def handle_cast({:MessageTraitementB, Param1 , Param2}, _pid, state) do 
+    #Code métier
+  end
 ```
-
 ### Un [supervisor](https://hexdocs.pm/elixir/Supervisor.html#content)
 
-```
+```elixir
 defmodule MyApp.Supervisor do
   use Supervisor
 
@@ -119,41 +126,60 @@ Stratégies shutdown :
 + X(integer) > 0 -> On kill le processus au bout de X seconds.
 + :infinity -> On ne kill pas le processus, il se chargera de se kill.
 
-### Un [genServer](https://hexdocs.pm/elixir/GenServer.html)
-Ci-dessous le code nécéssaire à la création d'un genServer, la méthode `start_link` est nécéssaire, les méthodes `handle_call` permettent de recevoir des messages et faire des traitements en conséquence.
-```
-defmodule MyApp.Worker do
-  use GenServer
-  
-  def start_link(name, options \\ []) do #Méthode lancée au démarrage du processus
-    GenServer.start_link(__MODULE__, %__MODULE__{name: name}, options)
-  end
-  
-  def handle_call({:MessageTraitementA, Param1}, _pid, state) do #Méthode lancée lors de la réception d'un message avec comme identifiant :MessageTraitementA
-    #Code métier
-  end
-  def handle_call({:MessageTraitementB, Param1 , Param2}, _pid, state) do 
-    #Code métier
-  end
-```
-
 + La première variable représente le message reçu par le genServer, à l'aide du pattern-matching il associera l'atom reçu à la méthode souhaitée.
 + La variable _pid représente simplement le pid du processus ayant envoyé le message.
 + La variable State représente l'etat de l'objet qui est stocké dans le genServer (n'oubliez pas, le genServeur est une machine à état pouvant recevoir des messages)
 
 Il est d'usage de faciliter l'utilisation de nos workers en y ajoutant des fonctions permettant de générer les messages attrapés par les méthodes `handle_call` ainsi :
-```
+```elixir
   def traitementA(pid, params) do
+  #Appel synchrone
     GenServer.call(pid, {:MessageTraitementA, param1})
   end
 
   def traitementB(pid, task_id) do
-    GenServer.call(pid, {:MessageTraitementB, param1,param2})
+  #Appel asynchrone
+    GenServer.cast(pid, {:MessageTraitementB, param1,param2})
   end
 ```
+
+### Une [application](https://hexdocs.pm/elixir/Application.html#content)
+Première étape, ajouter l'application permettant de lancer le serveur.
+
+```elixir
+defmodule MyApp.Application do
+  use Application
+
+  def start(_type, _args) do
+    import Supervisor.Spec, warn: false
+
+    children = [
+      supervisor(MyApp.Supervisor, [])
+    ]
+
+    opts = [strategy: :one_for_one]
+    Supervisor.start_link(children, opts)
+  end
+end
+```
+
+Il va cependant falloir définir l'application à lancer au démarrage dans le fichier mix.exs correspondant, pour celà remplacer l'application existant par 
+```elixir
+  def application do
+    [
+      extra_applications: [:logger],
+      #On définit l'application à lancer
+      mod: {MyApp.Application, []} 
+    ]
+  end
+```
+Voilà ! Vous pouvez essayez vous devriez obtenir un résultat identique :
+TODO
 ### Ajouter un [registry](https://hexdocs.pm/elixir/Registry.html#content) pour pouvoir définir plus simplement le nom de vos process.
 Les registry sont des supervisors spéciaux entièrement gérés par elixir, il est très simple d'en initialiser un. Votre registry sera l'enfant de l'un de vos supervisor, une bonne pratique et de le laisser s'occuper des process fils de son père, lorsque c'est utile.
-```
+
+Vous pouvez l'interposer entre votre Application et votre supervisor (sinon :hear_no_evil:) :
+```elixir
 defmodule MyApp.Registry_supervisor do
   use Supervisor
   @registry :my_registry    #Ici on déclare le nom du registry
@@ -170,9 +196,9 @@ defmodule MyApp.Registry_supervisor do
 C'est beau de faire un registry, mais il faut pouvoir l'utiliser ! Alors comment fait-on pour savoir si un processus existe ? Et si il n'existe pas, il faut le créer non ?
 Pour celà nous allons ajouter les méthodes suivante à notre superviseur
 
-```
-  def find_or_create(todolist_name) do
-    case Registry.lookup(@registry, todolist_name) do
+```elixir
+  def find_or_create(name) do
+    case Registry.lookup(@registry, name) do
       [] ->       #Dans le cas ou le processus n'existe pas
         __MODULE__ #TODO Verif ici avec baptiste
         |> find_supervisor_pid #On cherche le supervisor qui s'occupera du nouveau genServer
@@ -190,3 +216,9 @@ Pour celà nous allons ajouter les méthodes suivante à notre superviseur
     end)
   end
   ```
+  Félicitation, vous devriez avoir un résultat semblable à celui-ci :
+  TODO
+  Si ce n'est pas le cas appelez-nous :speech_balloon:
+  
+  # Mon premier "Tchat"
+
