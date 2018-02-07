@@ -6,10 +6,10 @@ Découverte du langage Elixir &amp; de son framework web Phoenix !
 Et pour ce projet, nous allons mettre en place un tchat, pour les plus fainéants d'entre vous, vous pouvez clone [discord]{https://github.com/discordapp). Pour les plus courageux, ca se passe plus bas ! :grinning:
 
 Mais tout d'abord voici les quelques users Stories que nous voulons mettre en place
-*TODO
-*TODO
-*TODO
-*TODO
++ TODO
++ TODO
++ TODO
++ TODO
 
 # Mise en place des outils :
 Pour commencer le projet, il faudra mettre en place les outils nécéssaires aux développeurs.
@@ -87,6 +87,18 @@ defmodule MyApp.Worker do
     #Code métier
   end
 ```
+Il est d'usage de faciliter l'utilisation de nos workers en y ajoutant des fonctions permettant de générer les messages attrapés par les méthodes `handle_call` ainsi :
+```elixir
+  def traitementA(pid, params) do
+  #Appel synchrone
+    GenServer.call(pid, {:MessageTraitementA, param1})
+  end
+
+  def traitementB(pid, task_id) do
+  #Appel asynchrone
+    GenServer.cast(pid, {:MessageTraitementB, param1,param2})
+  end
+```
 ### Un [supervisor](https://hexdocs.pm/elixir/Supervisor.html#content)
 
 ```elixir
@@ -110,7 +122,7 @@ defmodule MyApp.Supervisor do
   end
 end
 ```
-
+##### :princess: Le point culture : :princess:   
 Stratégies globale :
 + :one_for_one -> Si 1 processus meurt, on le relance
 + :one_for_all -> Si 1 processus meurt, on relance tout les processus
@@ -129,19 +141,6 @@ Stratégies shutdown :
 + La première variable représente le message reçu par le genServer, à l'aide du pattern-matching il associera l'atom reçu à la méthode souhaitée.
 + La variable _pid représente simplement le pid du processus ayant envoyé le message.
 + La variable State représente l'etat de l'objet qui est stocké dans le genServer (n'oubliez pas, le genServeur est une machine à état pouvant recevoir des messages)
-
-Il est d'usage de faciliter l'utilisation de nos workers en y ajoutant des fonctions permettant de générer les messages attrapés par les méthodes `handle_call` ainsi :
-```elixir
-  def traitementA(pid, params) do
-  #Appel synchrone
-    GenServer.call(pid, {:MessageTraitementA, param1})
-  end
-
-  def traitementB(pid, task_id) do
-  #Appel asynchrone
-    GenServer.cast(pid, {:MessageTraitementB, param1,param2})
-  end
-```
 
 ### Une [application](https://hexdocs.pm/elixir/Application.html#content)
 Première étape, ajouter l'application permettant de lancer le serveur.
@@ -163,18 +162,16 @@ defmodule MyApp.Application do
 end
 ```
 
-Il va cependant falloir définir l'application à lancer au démarrage dans le fichier mix.exs correspondant, pour celà remplacer l'application existant par 
+Dernière étape (et oui c'était rapide) définir l'application à lancer au démarrage dans le fichier mix.exs correspondant, pour celà remplacer l'application existant par :
 ```elixir
   def application do
     [
       extra_applications: [:logger],
-      #On définit l'application à lancer
+      #On définit ici l'application à lancer
       mod: {MyApp.Application, []} 
     ]
   end
 ```
-Voilà ! Vous pouvez essayez vous devriez obtenir un résultat identique :
-TODO
 ### Ajouter un [registry](https://hexdocs.pm/elixir/Registry.html#content) pour pouvoir définir plus simplement le nom de vos process.
 Les registry sont des supervisors spéciaux entièrement gérés par elixir, il est très simple d'en initialiser un. Votre registry sera l'enfant de l'un de vos supervisor, une bonne pratique et de le laisser s'occuper des process fils de son père, lorsque c'est utile.
 
@@ -222,3 +219,12 @@ Pour celà nous allons ajouter les méthodes suivante à notre superviseur
   
   # Mon premier "Tchat"
 
+  # Mise en place de l'api
+  
+  # Et enfin l'interface
+  
+# Félicitation
+:pray: Il n'y a plus qu'à mettre un très bon avis dans le mail que vous allez recevoir :pray:  
+On espère que ça vous a plu :heart:  
+
+Baptiste Famchon et Laurent Canis
