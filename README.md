@@ -229,8 +229,80 @@ Pour celà nous allons ajouter les méthodes suivante à notre superviseur
   # Mon premier "Tchat"
 
   # Mise en place de l'api
+Mettre en place une API est certainement la chose la plus simple et la plus rapide à faire dans le langage Elixir, et pour ça nous utiliserons la librairie [plug](https://github.com/elixir-plug/plug) et un serveur [cowboy](https://github.com/ninenines/cowboy).
+
+### Mise en place des dépendances :
+Vous l'avez sûrement déjà compris, pour gérer les dépendances c'est dans le fichier `mix.exs` que ça se passe (on pourrait l'assimiler à un package.json en JS). Nous allons donc ajouter les dépendances suivantes :
+```elixir
+ def deps do
+  [{:cowboy, "~> 1.0.0"},
+   {:plug, "~> 1.0"}]
+end
+```
+TODO VERIF SI C EST EXACT, DANS LA VIDEO MAIS PAS DANS ODOT Mais ce n'est pas tout ! Il faut aussi les ajouter dans la déclaration de l'application
+
+Ensuite on lance la commande `mix do get.deps, compile` qui téléchargera les dépendances et les compilera.
+
+### Création du router
+```èlixir
+defmodule API.Router do
+  use Plug.Router
   
-  # Et enfin l'interface
+  plug :match #Permet de recevoir des requêtes http
+  plug :dispatch #Permet de renvoyer des requêtes http
+
+#Route get sur l'url "/tests" :name est une variable stocké dans l'url
+#Noté l'instruction "oneLine" qui n'a pas besoin de <do,end> mais uniquement d'un do:
+  get "/tests/:name",   do: send_resp(conn, 200, "hello #{name}")
+#Idem en post
+  post "/tests/:param",  do
+    #On appel ici une fonction doSomethingWithName
+    modifiedName = API.Controller.Tchat.doSomethingWithName(conn.params["name"])
+    send_resp(conn, 200, "hello"<>)
+  end
+  #Tout ce qui ne match pas avec les urls précédentes seront redirigés ici
+  match _ do
+    send_resp(conn, 404, "404 - Not Found")
+  end
+end
+```
+##### :princess: Le point culture : :princess:   
+Plug est donc une librairie qui utilise la méta-programmation qu'elixir mets à disposition, ainsi les mots clefs plug, get, post... sont des nouveau mots clefs intégrés à la syntaxe ! On appel ça des maccros, cependant il ne faut pas en abuser ou vous rendrai vite compte que le langage sur lequel vous travaillez ne ressemble plus à grand chose...  
+
+Plug permet également d'effectuer des pré-traitements et des post-traitement, jusqu'ici nous avont mis en place les traitements identifiés par les atom :match et :dispatch
+
+### Démarrage du serveur
+Comme pour notre métier, il faut créer une application qui embarquera un serveur Cowboy ! 
+```elixir
+defmodule API.Application do
+  use Application
+
+  def start(_type, _args) do
+    children = [
+      Plug.Adapters.Cowboy.child_spec(:http, API.Router, [], [port: 4000])
+    ]
+
+    opts = [strategy: :one_for_one, name: API.Supervisor]
+    Supervisor.start_link(children, opts)
+  end
+end
+```
+
+Vous pouvez maintenant tester votre application avec la commande suivante `mix run --no-halt` cette commande permettra de laisser le processus up et ainsi permettre à notre router de rester à l'écoute de nouvelles requêtes.
+
+### Phase de refactoring, ajoutons notre controller
+
+### Amusons nous un peu plus avec notre plug !
+On va ajouter quelques traitements à notre code tout d'abord, loggons les échanges ! Ca tombe bien, plug nous permet d'ajouter un logger très simplement de la manière suivante `plug Plug.Logger`   
+On voudrait également pouvoir recevoir et envoyer du JSON, pour celà nous utiliserons la librairie [Poison](https://github.com/devinus/poison) ! Première étape l'installer (`[{:poison, "~> 3.1"}]`) puis on l'ajoute à notre routeur `plug Plug.Parsers, parsers: [:json], json_decoder: Poison` !   
+
+Votre routeur peut maintenant traiter le json et loggera les échanges ! :grin:
+
+TODO: modifier le controlleur pour le json
+
+
+
+# Et enfin l'interface
   
 # Félicitation
 :pray: Il n'y a plus qu'à mettre un très bon avis dans le mail que vous allez recevoir :pray:  
