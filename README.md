@@ -107,6 +107,11 @@ Il est d'usage de faciliter l'utilisation de nos workers en y ajoutant des fonct
     GenServer.cast(pid, {:MessageTraitementB, param1,param2})
   end
 ```
+
++ La première variable représente le message reçu par le genServer, à l'aide du pattern-matching il associera l'atom reçu à la méthode souhaitée.
++ La variable _pid représente simplement le pid du processus ayant envoyé le message.
++ La variable State représente l'etat de l'objet qui est stocké dans le genServer (n'oubliez pas, le genServeur est une machine à état pouvant recevoir des messages)
+
 ### Un [supervisor](https://hexdocs.pm/elixir/Supervisor.html#content)
 
 ```elixir
@@ -145,10 +150,6 @@ Stratégies shutdown :
 + :brutal_kill -> On kill le processus.
 + X(integer) > 0 -> On kill le processus au bout de X seconds.
 + :infinity -> On ne kill pas le processus, il se chargera de se kill.
-
-+ La première variable représente le message reçu par le genServer, à l'aide du pattern-matching il associera l'atom reçu à la méthode souhaitée.
-+ La variable _pid représente simplement le pid du processus ayant envoyé le message.
-+ La variable State représente l'etat de l'objet qui est stocké dans le genServer (n'oubliez pas, le genServeur est une machine à état pouvant recevoir des messages)
 
 ### Une [application](https://hexdocs.pm/elixir/Application.html#content)
 Première étape, ajouter l'application permettant de lancer le serveur.
@@ -205,8 +206,8 @@ Pour celà nous allons ajouter les méthodes suivante à notre superviseur
   def find_or_create(name) do
     case Registry.lookup(@registry, name) do
       [] ->       #Dans le cas ou le processus n'existe pas
-        __MODULE__ #TODO Verif ici avec baptiste
-        |> find_supervisor_pid #On cherche le supervisor qui s'occupera du nouveau genServer
+        __MODULE__
+        |> find_supervisor_pid #On cherche le pid du supervisor qui s'occupera du nouveau genServer
         |> MyApp.Another_supervisor.start_child(children_name, {:via, Registry, {@registry, children_name}}) #On demande à notre superviseur fils de démarrer un nouveau genServer et on lui passe le registry où le nouveau processus devra s'enregistrer
       [{pid, _}] ->
         {:ok, pid} #Sinon on renvoi le PID (l'identité) du processus trouvé
