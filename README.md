@@ -11,7 +11,7 @@ Découverte du langage Elixir &amp; de son framework web Phoenix !
 
 # Description du projet :
 
-Et pour ce projet, nous allons mettre en place un tchat, pour les plus fainéants d'entre vous, vous pouvez clone [discord]{https://github.com/discordapp). Pour les plus courageux, ca se passe plus bas ! :grinning:
+Et pour ce projet, nous allons mettre en place un tchat, pour les plus fainéants d'entre vous, vous pouvez clone [discord](https://github.com/discordapp). Pour les plus courageux, ca se passe plus bas ! :grinning:
 
 Mais tout d'abord voici les quelques users Stories que nous voulons mettre en place
 + TODO
