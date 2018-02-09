@@ -244,7 +244,7 @@ TODO VERIF SI C EST EXACT, DANS LA VIDEO MAIS PAS DANS ODOT Mais ce n'est pas to
 Ensuite on lance la commande `mix do get.deps, compile` qui téléchargera les dépendances et les compilera.
 
 ### Création du router
-```èlixir
+```elixir
 defmodule API.Router do
   use Plug.Router
   
@@ -291,17 +291,108 @@ end
 Vous pouvez maintenant tester votre application avec la commande suivante `mix run --no-halt` cette commande permettra de laisser le processus up et ainsi permettre à notre router de rester à l'écoute de nouvelles requêtes.
 
 ### Phase de refactoring, ajoutons notre controller
+Pour rendre les choses plus clair, nous allons séparer notre router en deux modules, l'un gérera le routing, et l'autre sera notre controlleur !
+```elixir
+defmodule API.Controller.List do
+  use API.Controller
+  alias Todo
 
+  def index(conn) do
+    {:ok, list} = Todo.list(conn.params["name"])
+    Plug.Conn.send_resp(conn, 200, list)
+  end
+
+  def create(conn) do
+    todo = Todo.add(conn.params["name"], conn.body_params)
+    case todo do
+      {:ok, list} ->
+       Plug.Conn.send_resp(conn, 200, list)
+      {:error, errors} ->
+    Plug.Conn.send_resp(conn, 500, "Internal error")
+      end
+  end
+end
+
+```
+Et modifions le router :
+```elixir
+defmodule API.Router do
+  use Plug.Router
+  
+  plug :match #Permet de recevoir des requêtes http
+  plug :dispatch #Permet de renvoyer des requêtes http
+
+  get "/tests/:name",   do: API.Controller.List.index(conn)
+  post "/tests/:param",  do: API.Controller.List.create(conn)
+
+  #Tout ce qui ne match pas avec les urls précédentes seront redirigés ici
+  match _ do
+    send_resp(conn, 404, "404 - Not Found")
+  end
+end
+```
 ### Amusons nous un peu plus avec notre plug !
 On va ajouter quelques traitements à notre code tout d'abord, loggons les échanges ! Ca tombe bien, plug nous permet d'ajouter un logger très simplement de la manière suivante `plug Plug.Logger`   
-On voudrait également pouvoir recevoir et envoyer du JSON, pour celà nous utiliserons la librairie [Poison](https://github.com/devinus/poison) ! Première étape l'installer (`[{:poison, "~> 3.1"}]`) puis on l'ajoute à notre routeur `plug Plug.Parsers, parsers: [:json], json_decoder: Poison` !   
+On voudrait également pouvoir recevoir du JSON, pour celà nous utiliserons la librairie [Poison](https://github.com/devinus/poison) ! Première étape l'installer (`[{:poison, "~> 3.1"}]`) puis on l'ajoute à notre routeur `plug Plug.Parsers, parsers: [:json], json_decoder: Poison` !   
 
-Votre routeur peut maintenant traiter le json et loggera les échanges ! :grin:
-
-TODO: modifier le controlleur pour le json
-
+Votre routeur peut maintenant traiter le JSON entrant et loggera les échanges ! :grin:   
+Mais il faut encore encoder les datas en JSON avant de l'envoyer !   
 
 
+On voudrait que notre controlleur encode le json à chaques appels !
+Pour celà nous allons faire une fichier supplémentaire `Controller.ex` qui sera en quelque sorte un controlleur possédant des méthodes gérant les réponses. Tout nos autres controlleurs utiliseront celui-ci vià la balise `use API.Controller` (vous l'aurez compris, il faudra modifier le controleur de la phase précédente !)   
+```elixir
+defmodule API.Controller do
+
+#Si les dats reçu sont sous forme de "liste" on les convertis en map
+  def render(conn, module, template_name, status_code, datas) when is_list(datas) do
+    render(conn, module, template_name, status_code, Enum.into(datas, %{}))
+  end
+  
+  #Et on encode nos données avant de les envoyées en utilisant Poison !
+  def render(conn, module, template_name, status_code, datas) do
+    response =
+      module
+      |> apply(:render, [template_name, datas])
+      |> Poison.encode!
+
+    Plug.Conn.send_resp(conn, status_code, response)
+  end
+
+#Les modules qui utiliseront celui-ci importeront automatiquement Plug.Conn et API.Controller
+  defmacro __using__(_params) do
+    quote do
+      import Plug.Conn
+      import API.Controller
+    end
+  end
+end
+
+```
+
+Il faut encore modifier le controlleur écrit précédemment pour utiliser notre nouveau module ! TODO MODIFIER POUR CORRESPONDRE AU TP
+```elixir
+defmodule API.Controller.List do
+  use API.Controller
+  alias Todo
+
+  def index(conn) do
+    {:ok, list} = Todo.list(conn.params["name"])
+    render(conn, API.View.List, "index.json", 200, list: list)
+  end
+
+  def create(conn) do
+    todo = Todo.add(conn.params["name"], conn.body_params)
+
+    case todo do
+      {:ok, list} ->
+        render(conn, API.View.List, "index.json", 200, list: list)
+      {:error, errors} ->
+        render(conn, API.View.Error, "422.json", 422, errors: errors)
+    end
+  end
+end
+```
 # Et enfin l'interface
   
 # Félicitation
