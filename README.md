@@ -28,7 +28,9 @@ Après cette magnifique présentation, il est temps pour vous de mettre la main 
 Pour le confort des yeux:
 
 **Si vous travaillez sur Atom :** On vous conseille le plugin [ElixirSublime](https://github.com/vishnevskiy/ElixirSublime)
+
 **Si vous travaillez sur VS Code :** On vous conseille le plugin [vscode-elixir](https://marketplace.visualstudio.com/items?itemName=mjmcloug.vscode-elixir)
+
 **Si vous travaillez sur Sublime Text :** On vous conseille le plugin [atom-elixir](https://github.com/msaraiva/atom-elixir)
 
 **Sinon....** Bon courage BG ! :fu:
