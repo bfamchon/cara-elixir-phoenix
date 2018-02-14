@@ -14,6 +14,8 @@ Après cette magnifique présentation, il est temps pour vous de mettre la main 
 
 ## Erlang & Elixir 
 
+**Si vous travaillez sur le PC de la fac, on vous a déjà installé ce qu'il faut, passez directement à l'étape Phoenix**
+
 - Installer la [machine Erlang](http://erlang.org/doc/index.html)
 - Installer le [langage Elixir](https://elixir-lang.org/) en suivant la [procédure pour votre environnement](https://elixir-lang.org/install.html)
 - Lancer `mix -v` pour vérifier la bonne installation du langage ! ( 1.5.3 actuellement )
