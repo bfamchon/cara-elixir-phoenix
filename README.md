@@ -61,7 +61,10 @@ Lancez désormais ``mix phx.server``, et rendez-vous à ``localhost:4000`` !
 
 <img src="https://preview.ibb.co/k9cu87/Capture_du_2018_02_13_22_34_24.png" alt="Phoenix starter" border="0">
 
-***Ça y est, tout fonctionne ! On passe aux choses sérieuses !***
+***Ça y est, tout fonctionne ! [On passe aux choses sérieuses !](https://github.com/unip62/cara-elixir-phoenix/edit/master/PART1.md)***
+
+[On passe aux choses sérieuses !](https://github.com/unip62/cara-elixir-phoenix/edit/master/PART1.md)
+
 
 # La recette !
 ## 1ère étape: Hello benjam' !
