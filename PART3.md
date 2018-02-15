@@ -54,4 +54,4 @@ Nous venons ensuite gérer la récéption de messages grâce à ``room:on()``, q
 
 Rechargez votre page et... Admirez votre boulot :tada:
 
-Allez, c'est l'heure pour vous de prendre une petite pause avant d'attaquer [un petit CRUD avec actions en BDD]() !
+Allez, c'est l'heure pour vous de prendre une petite pause avant d'attaquer [un petit CRUD avec actions en BDD](https://github.com/unip62/cara-elixir-phoenix/blob/master/CRUD1.md) !
