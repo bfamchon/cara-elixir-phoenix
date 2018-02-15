@@ -47,12 +47,28 @@ On veut générer un squelette grâce à Phoenix: `mix phx.new chien` ( parce-qu
 Répondez Yes* !
 **Oui*
 
-Laissez vous guider par le terminal !
+``mix ecto.create`` va vous permettre de créer la base, par défaut Postgres [mais configurable](https://github.com/elixir-ecto/ecto), avec les paramètres que vous avez renseigné dans le ``config/*.exs``.
 
+Justement, nous allons utiliser le connecteur sqlite3, plus adapté pour notre usage. Dans le fichier ``mix.exs``, ajoutez la dépendance suivante:
+```
+  defp deps do
+    [
+      ...
+      {:sqlite_ecto2, "~> 2.1"}
+    ]
+  end
+```
+Et lancez un ``mix depts.get`` pour récupérer le connecteur sqlite ! Dernière petite config à changer, dans le fichier ``config/dev.exs``, remplacez la configuration par défaut:
 
-// TODO PASSER EN SQLITE3
+```
+# Configure your database
+config :chien, Chien.Repo,
+  adapter: Sqlite.Ecto2,
+  database: "chien_dev"
+```
 
-``mix ecto.create`` va vous permettre de créer la base, par défaut Postgres [mais configurable pour d'autres databases](https://github.com/elixir-ecto/ecto), avec les paramètres que vous avez renseigné dans le ``config/*.exs``.
+Vous pouvez y allez, lancez la création avec ecto !
+
 
 ```
 	The database for Chien.Repo has been created
