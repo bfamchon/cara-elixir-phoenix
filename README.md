@@ -52,7 +52,7 @@ Laissez vous guider par le terminal !
 
 // TODO PASSER EN SQLITE3
 
-``mix ecto.create`` va vous permettre de créer la base, par défaut Postgres [mais configurable pour d'autres langages](https://github.com/elixir-ecto/ecto), avec les paramètres que vous avez renseigné dans le ``config/*.exs``.
+``mix ecto.create`` va vous permettre de créer la base, par défaut Postgres [mais configurable pour d'autres databases](https://github.com/elixir-ecto/ecto), avec les paramètres que vous avez renseigné dans le ``config/*.exs``.
 
 ```
 	The database for Chien.Repo has been created
