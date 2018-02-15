@@ -1,4 +1,4 @@
-## 2ème étape: Et si on gérait de multiples utilisateurs ?
+## 2ème étape: Et si on gérait le multi-user ?
 
 On va tout d'abord générer le [module Presence](https://hexdocs.pm/phoenix/Phoenix.Presence.html) de Phoenix, qui va nous permettre de générer un superviseur chargé d'observer & gérer les événements sur nos channels !
 `` mix phx.gen.presence `` nous indique alors d'ajouter ce nouveaux membre au supervision-tree !
@@ -130,3 +130,5 @@ Les deux événements sur la room permettent de gérer les changements dans notr
 Actualisez votre page et ouvrez plusieurs onglets... :tada:
 
 <img src="https://preview.ibb.co/kQTwO7/Capture_du_2018_02_15_13_54_28.png" alt="Phoenix starter" border="0">
+
+***C'est bien tout ça mains... [Quand est-ce qu'on parle ?](https://github.com/unip62/cara-elixir-phoenix/blob/master/PART3.md)***
