@@ -40,7 +40,7 @@ Pour le confort des yeux:
 # Préparer les ingrédients
 
 On veut générer un squelette grâce à Phoenix: `mix phx.new chien` ( parce-que j'keaf moins les chat ) 
-`phx` est [votre super générateur](https://hexdocs.pm/phoenix/Mix.Tasks.Phx.Server.html#content) ! Super utile quand on débute pour se rendre compte de la puissance de l'outil... Mais déconseillé pour les utilisations avancées !
+`phx` est [votre super générateur](https://hexdocs.pm/phoenix/Mix.Tasks.Phx.Server.html#content) ! Super utile quand on débute pour se rendre compte de la puissance de l'outil... 
 ```
 	Fetch and install dependencies? [Yn]
 ```
@@ -48,6 +48,9 @@ Répondez Yes* !
 **Oui*
 
 Laissez vous guider par le terminal !
+
+
+// TODO PASSER EN SQLITE3
 
 ``mix ecto.create`` va vous permettre de créer la base, par défaut Postgres [mais configurable pour d'autres langages](https://github.com/elixir-ecto/ecto), avec les paramètres que vous avez renseigné dans le ``config/*.exs``.
 
