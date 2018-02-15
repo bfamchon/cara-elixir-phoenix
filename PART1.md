@@ -31,3 +31,6 @@ Vous voyez cette balise ``<%# HERE %>`` ? Le ``#`` est un commentaire ! Ce serai
 L'avantage dans Phoenix, c'est qu'il est plutôt simple de manipuler les paramètres http ! Let's go, on veut pouvoir taper ``localhost:4000?user=Benjam'``
 
 On va donc ajouter ``<% @conn.params["user"] %>``, qui se chargera, dans la requête HTTP, de récupérer le paramètre  ``user`` & de l'afficher ! 
+
+
+***Et maintenant... [Si on gérait le multi-user ?](https://github.com/unip62/cara-elixir-phoenix/blob/master/PART2.md)***
