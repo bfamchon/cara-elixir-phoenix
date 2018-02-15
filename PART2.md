@@ -131,4 +131,5 @@ Actualisez votre page et ouvrez plusieurs onglets... :tada:
 
 <img src="https://preview.ibb.co/kQTwO7/Capture_du_2018_02_15_13_54_28.png" alt="Phoenix starter" border="0">
 
-***C'est bien tout ça mains... [Quand est-ce qu'on parle ?](https://github.com/unip62/cara-elixir-phoenix/blob/master/PART3.md)***
+
+***C'est bien tout ça mais... [Quand est-ce qu'on parle ?](https://github.com/unip62/cara-elixir-phoenix/blob/master/PART3.md)***
