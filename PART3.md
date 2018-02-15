@@ -1,4 +1,4 @@
-## 3ème étape: C'est bien beau tout ça... Mais quand est-ce qu'on parle ?
+## 3ème étape: C'est bien tout ça... Mais quand est-ce qu'on parle ?
 
 Minute on y vient ! Mais d'abord, il va falloir ajouter quelques fonctionnalités à notre ``room_channel.ex``... Comme la réception de nouveaux messages !
 
