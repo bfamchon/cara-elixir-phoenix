@@ -13,7 +13,7 @@ Et là vous dites:
 Vous êtes vraiment beaucoup trop bons !
 
 On va maintenant modifier notre fonction ``connect``, histoire qu'elle corresponde un peu plus à notre sujet !
-```
+```elixir
   def connect(%{"user" => user}, socket) do
     {:ok, assign(socket, :user, user)}
   end
@@ -23,7 +23,7 @@ On lui donne un premier paramètre la  socket, les deux autres paramètres seron
 Cette fonction assigne donc au socket un nouveau couple clef valeur, notre utilisateur !
 
 Nous avons dé-commenté une ligne supposant l'existence d'un certain RoomChannel... Il faut donc créer le fichier ``room_channel.ex`` dans le même dossier, en voilà la structure:
-```
+```elixir
 	defmodule ChienWeb.RoomChannel do
 	    use ChienWeb, :channel
 	    alias ChienWeb.Presence
@@ -37,14 +37,14 @@ Alias ? Mais c'est quoi ça ? Eh bien c'est simple le mot clef alias permet de r
 En utilisant ``alias ChatterWeb.Presence, as:pre`` vous pouvez appeler le module ChatterWeb.Presence avec pre. Ici nous n'avons pas définit de "as" l'alias par défaut se fait sur la deuxième partie de l'élément donc Presence.
 
 Ajoutez y la fonction suivante:
-```
+```elixir
     def join("room:lobby", _, socket) do
       send self(), :after_join
       {:ok, socket}
     end
 ```
 Ici, on définit le comportement à l'arrivée d'un utilisateur dans le channel ! Dans notre cas, on exécute la callback correspondant à l'atom ``:after_join``.
-```
+```elixir
     def handle_info(:after_join, socket) do
       Presence.track(socket, socket.assigns.user, %{
         online_at: :os.system_time(:milli_seconds)
@@ -64,7 +64,7 @@ Ajoutons maintenant un peu de traitement JS histoire de gérer & formater les in
 
 Remplacez le contenu du fichier ``/assets/js/app.js`` par 
 
-```
+```javascript
 import 'phoenix_html';
 import { Presence, Socket } from 'phoenix';
 
@@ -80,7 +80,7 @@ Elixir met automatiquement les sockets sur ``/socket``, vous pouvez observer ce 
 
 Rajoutez au fichier ces quelques lignes:
 
-```
+```javascript
 let formatedTimestamp = Ts => {
   let date = new Date(Ts);
   return date.toLocaleString();
@@ -126,7 +126,7 @@ room.on('presence_diff', diff => {
 room.join();
 ```
 
-Ici, nous récupérons la liste d'id ``UserList`` pour la compléter avec notre tableau de présences ! Ce tableau de présences, on l'a formaté un peu pour afficher quelque chose de plus lisible q'un Timestamp venant du serveur... 
+Ici, nous récupérons la liste d'id ``UserList`` pour la compléter avec notre tableau de présences ! Ce tableau de présences, on l'a formaté un peu pour afficher quelque chose de plus lisible qu'un Timestamp venant du serveur... 
 
 Les deux événements sur la room permettent de gérer les changements dans notre liste de présence à notre arrivée dans le salon ( ``presence_state``), mais aussi en temps réel ( ``presence_diff``) !
 
