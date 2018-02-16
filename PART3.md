@@ -3,7 +3,7 @@
 Minute on y vient ! Mais d'abord, il va falloir ajouter quelques fonctionnalités à notre ``room_channel.ex``... Comme la réception de nouveaux messages !
 
 Ajoutez y la nouvelle fonction:
-```
+```elixir
 	def handle_in("message:new", message, socket) do
       broadcast! socket, "message:new", %{
         user: socket.assigns.user,
@@ -20,7 +20,7 @@ Attaquons désormais le javascript pour cette partie !
 
 On retourne dans notre fichier js principal pour y ajouter la gestion des messages:
 
-```
+```javascript
 let messageInput = document.getElementById('NewMessage');
 messageInput.addEventListener('keypress', e => {
   if (e.keyCode == 13 && messageInput.value != '') {
@@ -33,7 +33,7 @@ messageInput.addEventListener('keypress', e => {
 
 Ici, nous allons gérer les entrées utilisateurs: quand il appuie sur ``Enter``, on push un nouveau message dans le channel ``message:new`` que l'on vient de créer !
 
-```
+```javascript
 let messageList = document.getElementById('MessageList');
 let renderMessage = message => {
   let messageElement = document.createElement('li');
