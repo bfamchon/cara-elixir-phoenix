@@ -34,7 +34,7 @@ Allons y ! On créer le fichier ``lib/chien_web/controler/user_controller.ex`` :
 
 ```elixir
 defmodule ChienWeb.UserController do
-    use ChienrWeb, :controller
+    use Chien.Web, :controller
     alias Chien.User
     alias Chien.Repo
 end
