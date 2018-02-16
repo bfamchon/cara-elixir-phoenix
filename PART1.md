@@ -26,7 +26,7 @@ On va alors modifier le fichier `templates/page/index.html.eex` de manière à p
 ```
 Une fois le serveur lancé, vous n'avez plus qu'à rafraichir la page pour que les modifications soient prises en compte !
 
-Vous voyez cette balise ``<%# HERE %>`` ? Le ``#`` est un commentaire ! Ce serait sympa de pouvoir afficher le nom de notre utilisateur non ?
+Vous voyez cette balise ``<%# HERE %>`` ? ``<% %>`` vous permettra d'ajouter du code elixir qui sera interprété dans votre page HTML tandis que le ``#`` est un commentaire ! Ce serait sympa de pouvoir afficher le nom de notre utilisateur non ?
 
 L'avantage dans Phoenix, c'est qu'il est plutôt simple de manipuler les paramètres http ! Let's go, on veut pouvoir taper ``localhost:4000?user=Benjam'``
 
