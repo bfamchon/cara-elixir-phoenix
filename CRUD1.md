@@ -22,13 +22,11 @@ Comme présenté dans le talk introductif, la commande ``iex -S mix phx.server``
 Commençons par définir quelques alias afin d'y accéder plus facilement dans nos commandes:
 ``alias Chien.Repo`` & ``alias Chien.User``
 
-Essayons de récupérer l'ensemble de nos utilisateurs grâce à: ``Repo.all(User)``
-
-Ben ouais BG, c'est un tableau vide, essaye d'insérer la structure User ci-dessous & rejoue la commande !
+Essayons de récupérer l'ensemble de nos utilisateurs grâce à: ``Repo.all(User)``... Ben ouais BG, c'est un tableau vide, essaye d'insérer la structure User ci-dessous & rejoue la commande !
 
 ``Repo.insert(%User{email: "denis.brogniart@kohlant.ah", password: "cabane"})``
 
-*Maintenant, ce serait bien d'avoir un contrôleur pour servir d'intermédiaire entre les différentes briques, non ?*
+***Maintenant, ce serait bien d'avoir un contrôleur pour servir d'intermédiaire entre les différentes briques, non ?***
 
 Allons y ! On créer le fichier ``lib/chien_web/controler/user_controller.ex`` :computer:
 
@@ -41,7 +39,7 @@ end
 ``
 
 Puis celui correspondant à notre vue: 
-// TODO trop compris à quoi il servait...
+// TODO pas trop compris à quoi il servait...
 
 ``
 defmodule ChienWeb.UserView do
@@ -70,9 +68,7 @@ Nous n'avons pas encore routé ce chemin... Allons faire un tour dans le fichier
 
 Nous avons été assez impréssioné par le fait qu'une simple ligne resources puisse implicitement déclaré une multitude d'endpoints pour notre router: ``mix phx.routes`` pour y visualiser !
 
-Actuellement si vous lancez un ``localhost:4000/users``, Phoenix vous dira qu'il manque un index.html pour l'UserView...
-
-Allons créer le fichier ``lib/chien_web/templates/user/index.html.eex`` 
+Actuellement si vous lancez un ``localhost:4000/users``, Phoenix vous dira qu'il manque un index.html pour l'UserView... Allons créer le fichier ``lib/chien_web/templates/user/index.html.eex`` !
 
 À remplir avec:
 ```
@@ -137,3 +133,4 @@ On se contentera ici d'afficher son email par exemple ! À vous de jouer, de la 
 
 La dernière balise est un petit lien de retour vers notre index des utilisateurs, pas de dark-magic ici ! :crystal_ball:
 
+On passe maintenant à l'édit, les procédures sont similaires 
