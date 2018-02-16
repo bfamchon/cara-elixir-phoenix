@@ -8,7 +8,7 @@ On va alors modifier le fichier `templates/page/index.html.eex` de manière à p
 	<div class="row">
 	  <div class="col-md-12 alert alert-info">
 	    Hello, <span id="User">
-	    <%# HERE %>
+	    <%#= HERE %>
 	    </span>!
 	  </div>
 	  <div class="col-md-8">
@@ -26,11 +26,11 @@ On va alors modifier le fichier `templates/page/index.html.eex` de manière à p
 ```
 Une fois le serveur lancé, vous n'avez plus qu'à rafraichir la page pour que les modifications soient prises en compte !
 
-Vous voyez cette balise ``<%# HERE %>`` ? ``<% %>`` vous permettra d'ajouter du code elixir qui sera interprété dans votre page HTML tandis que le ``#`` est un commentaire ! Ce serait sympa de pouvoir afficher le nom de notre utilisateur non ?
+Vous voyez cette balise ``<%= # HERE %>`` ? ``<%= %>`` vous permettra d'ajouter du code elixir qui sera interprété dans votre page HTML tandis que le ``#`` est un commentaire ! Ce serait sympa de pouvoir afficher le nom de notre utilisateur non ?
 
 L'avantage dans Phoenix, c'est qu'il est plutôt simple de manipuler les paramètres http ! Let's go, on veut pouvoir taper ``localhost:4000?user=Benjam'``
 
-On va ajouter ``<% @conn.params["user"] %>``, qui se chargera, dans la requête HTTP, de récupérer le paramètre  ``user`` & de l'afficher ! 
+On va ajouter ``<%= @conn.params["user"] %>``, qui se chargera, dans la requête HTTP, de récupérer le paramètre  ``user`` & de l'afficher ! 
 
 
 ***Et maintenant... [Si on gérait le multi-user ?](https://github.com/unip62/cara-elixir-phoenix/blob/master/PART2.md)***
