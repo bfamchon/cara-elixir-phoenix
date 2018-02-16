@@ -28,7 +28,7 @@ Ben ouais BG, c'est un tableau vide, essaye d'insérer la structure User ci-dess
 
 ``Repo.insert(%User{email: "denis.brogniart@kohlant.ah", password: "cabane"})``
 
-Maintenant, ce serait bien d'avoir un contrôleur pour servir d'intermédiaire entre les différentes briques, non ?
+*Maintenant, ce serait bien d'avoir un contrôleur pour servir d'intermédiaire entre les différentes briques, non ?*
 
 Allons y ! On créer le fichier ``lib/chien_web/controler/user_controller.ex`` :computer:
 
@@ -105,4 +105,35 @@ Allons créer le fichier ``lib/chien_web/templates/user/index.html.eex``
 <%= link "New user", to: user_path(@conn, :new) %>
 ```
 
-On vous donne en avance les fonctionnalités à implémenter par rapport aux balises ``<%= link %>``
+On vous donne en avance les fonctionnalités à implémenter par rapport aux balises ``<%= link %>``. Rien de sorcier là non plus, on boucle sur les utilisateurs de notre ``@conn`` & on met à dispo 4 liens qui vont diriger vers le ``user_path`` (/users), en y ajoutant les spécificités pour la navigation:
+- :show (/users/:id),
+- :edit (/users/:id/edit),
+- :new (/users/new)
+- :delete qui se fait ici en inline, on précise la méthode appelée au clic qui sera :delete, et on ouvre un alert de confirmation ``[confirm: "Are you sure?"]``
+
+Allons y, retournons dans le ``user_controller`` pour ajouter la fonction show ! D'ailleurs j'suis sûr qu'avez tout ce que l'on vous a expliqué, vous pouvez y faire seul !
+
+**Tips:**
+- À l'image d'index, cette fonction prend 2 paramètres: la connexion & la map clef valeur id (vous en avez déjà fait dans le ``room_channel.ex``, quand il fallait gérer les messages!)
+- Cette fonction va d'abord [récupérer un utilisateur d'id demandé](https://hexdocs.pm/ecto/Ecto.Repo.html#content), à l'aide d'un get par exemple ;-)
+- Puis rendre une nouvelle page ``show.html`` en n'oubliant pas de lui faire passer l'utilisateur que l'on a récupéré !
+
+Très bien, en bon expert Phoenix, vous avez remarqué que cette page n'existe pas encore... Vous vous souvenez du dossier ``user`` dans les templates ? Ajoutez y donc un nouveau fichier ``show.html.eex``
+
+```
+<h2>Show user</h2>
+
+<ul>
+    <li>
+        <strong>Email: </strong>
+        ........................
+    </li>
+</ul>
+
+<%= link "Let's go back !", to: user_path(@conn, :index) %>
+```
+
+On se contentera ici d'afficher son email par exemple ! À vous de jouer, de la récupération de paramètres dans la connexion ? Facile, j'en ai déjà fait pour la toute première partie !
+
+La dernière balise est un petit lien de retour vers notre index des utilisateurs, pas de dark-magic ici ! :crystal_ball:
+
