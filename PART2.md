@@ -19,7 +19,7 @@ On va maintenant modifier notre fonction ``connect``, histoire qu'elle correspon
   end
 ```
 
-On lui donne en paramètre un socket ainsi qu'une map, dont la clef est ``"user"``, et la valeur ``user``  !
+On lui donne un premier paramètrela  socket, les deux autres paramètres seront liée pour former une map dont la clef est ``"user"``, et la valeur ``user`` !  (Vous remarquez l'utilisation d'un atom, ces constantes dont la valeur est égal à leurs noms)
 Cette fonction assigne donc au socket un nouveau couple clef valeur, notre utilisateur !
 
 Nous avons dé-commenté une ligne supposant l'existence d'un certain RoomChannel... Il faut donc créer le fichier ``room_channel.ex`` dans le même dossier, en voilà la structure:
