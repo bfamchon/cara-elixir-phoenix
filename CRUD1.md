@@ -17,7 +17,7 @@ Côté ``lib/chien/user.ex``, on observe le schema User mais surtout la [fonctio
 
 Lancez la commande ecto pour migrer vos changements en base, et on part insérer notre premier utilisateur à l'aide du mix interactif !
 
-Comme présenté dans le talk introductif, la commande ``iex -S mix phx.server`` va lancer un shell interractif !
+Comme présenté dans le talk introductif, la commande ``iex -S mix phx.server`` va lancer un shell interractif en prenant compte vos sources compilées !
 
 Commençons par définir quelques alias afin d'y accéder plus facilement dans nos commandes:
 ``alias Chien.Repo`` & ``alias Chien.User``
@@ -30,7 +30,7 @@ Essayons de récupérer l'ensemble de nos utilisateurs grâce à: ``Repo.all(Use
 
 Allons y ! On créer le fichier ``lib/chien_web/controler/user_controller.ex`` :computer:
 
-``
+``elixir
 defmodule ChienWeb.UserController do
     use ChienrWeb, :controller
     alias Chien.User
@@ -41,7 +41,7 @@ end
 Puis celui correspondant à notre vue: 
 // TODO pas trop compris à quoi il servait...
 
-``
+``elixir
 defmodule ChienWeb.UserView do
     use ChienWeb, :view
 end
@@ -49,29 +49,29 @@ end
 
 Dans ce controller, ajoutons le point d'entrée principal qui listera tous les utilisateurs:
 
-``
+```elixir
     def index(conn, _params) do
       users = Repo.all(User)
       render(conn, "index.html", users: users)
     end
-``
+```
 
 Nous n'avons pas encore routé ce chemin... Allons faire un tour dans le fichier ``lib/chien_web/router.ex`` pour ajouter notre ressource supplémentaire:
 
-``
+```elixir
   scope "/", ChienWeb do
     ...
     resources "/users", UserController
     ...
   end
-``
+```
 
 Nous avons été assez impréssioné par le fait qu'une simple ligne resources puisse implicitement déclaré une multitude d'endpoints pour notre router: ``mix phx.routes`` pour y visualiser !
 
 Actuellement si vous lancez un ``localhost:4000/users``, Phoenix vous dira qu'il manque un index.html pour l'UserView... Allons créer le fichier ``lib/chien_web/templates/user/index.html.eex`` !
 
 À remplir avec:
-```
+```html
 <h2>List of users</h2>
 
 <table class="table">
@@ -116,7 +116,7 @@ Allons y, retournons dans le ``user_controller`` pour ajouter la fonction show !
 
 Très bien, en bon expert Phoenix, vous avez remarqué que cette page n'existe pas encore... Vous vous souvenez du dossier ``user`` dans les templates ? Ajoutez y donc un nouveau fichier ``show.html.eex``
 
-```
+```html
 <h2>Show user</h2>
 
 <ul>
@@ -135,7 +135,7 @@ La dernière balise est un petit lien de retour vers notre index des utilisateur
 
 On passe maintenant à l'édit, les procédures sont similaires ! On commence donc par implémenter les fonctionnalités du controller :runner:
 
-```
+```elixir
     def new(conn, _params) do
       changeset = User.changeset(%User{}, %{})
       render(conn, "new.html", changeset: changeset)
@@ -147,7 +147,7 @@ Et ce changeset récupéré, nous le poussons vers la page new.html !
 
 D'ailleurs cette fameuse page html elixifié, allons la créer !
 
-```
+```html
   <h2>Create a new user</h2>
 
   <%= render "form.html", changeset: @changeset, action: user_path(@conn, :create) %>
