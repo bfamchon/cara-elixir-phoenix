@@ -4,7 +4,7 @@ Minute on y vient ! Mais d'abord, il va falloir ajouter quelques fonctionnalité
 
 Ajoutez y la nouvelle fonction:
 ```elixir
-	def handle_in("message:new", message, socket) do
+    def handle_in("message:new", message, socket) do
       broadcast! socket, "message:new", %{
         user: socket.assigns.user,
         body: message,
