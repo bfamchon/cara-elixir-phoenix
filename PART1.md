@@ -4,7 +4,7 @@
 
 La majorité du projet web phoenix va se trouver dans chien_web.
 On va alors modifier le fichier `templates/page/index.html.eex` de manière à préparer notre interface !
-```
+```html
 	<div class="row">
 	  <div class="col-md-12 alert alert-info">
 	    Hello, <span id="User">
