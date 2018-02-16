@@ -32,22 +32,22 @@ Si tu es jeune, beau, et intéréssé par Ecto, tu peux allez te renseigner sur 
 
 Allons y ! On créer le fichier ``lib/chien_web/controler/user_controller.ex`` :computer:
 
-``elixir
+```elixir
 defmodule ChienWeb.UserController do
     use ChienrWeb, :controller
     alias Chien.User
     alias Chien.Repo
 end
-``
+```
 
 Puis celui correspondant à notre vue: 
 // TODO pas trop compris à quoi il servait...
 
-``elixir
+```elixir
 defmodule ChienWeb.UserView do
     use ChienWeb, :view
 end
-``
+```
 
 Dans ce controller, ajoutons le point d'entrée principal qui listera tous les utilisateurs:
 
