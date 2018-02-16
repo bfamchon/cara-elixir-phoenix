@@ -26,6 +26,8 @@ Essayons de récupérer l'ensemble de nos utilisateurs grâce à: ``Repo.all(Use
 
 ``Repo.insert(%User{email: "denis.brogniart@kohlant.ah", password: "cabane"})``
 
+Si tu es jeune, beau, et intéréssé par Ecto, tu peux allez te renseigner sur les merveilleuses méthodes de ton repository préféré [ici](https://hexdocs.pm/ecto/Ecto.Repo.html)
+
 ***Maintenant, ce serait bien d'avoir un contrôleur pour servir d'intermédiaire entre les différentes briques, non ?***
 
 Allons y ! On créer le fichier ``lib/chien_web/controler/user_controller.ex`` :computer:
