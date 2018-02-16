@@ -33,6 +33,9 @@ Nous avons dé-commenté une ligne supposant l'existence d'un certain RoomChanne
 
 Rien de sorcier, on spécifie la création d'un channel grâce à l'atom, et on alias Presence pour l'utiliser dans le scope du module !
 
+Alias ? Mais c'est quoi ça ? Eh bien c'est simple le mot clef alias permet de raccourcir les appels à un module donnée avec un nom.
+En utilisant ``alias ChatterWeb.Presence, as:pre`` vous pouvez appeler le module ChatterWeb.Presence avec pre. Ici nous n'avons pas définit de "as" l'alias par défaut se fait sur la deuxième partie de l'élément donc Presence.
+
 Ajoutez y la fonction suivante:
 ```
     def join("room:lobby", _, socket) do
