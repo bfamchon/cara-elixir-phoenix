@@ -56,7 +56,7 @@ Ici, on définit le comportement à l'arrivée d'un utilisateur dans le channel 
 
 Voilà cette fameuse callback qui ne fait rien de bien sorcier !
 
-On ajoute simplement, pour nouvel utilisateur de ``socket.assigns.user``, une map contenant un timestamp ``online_at``.
+On ajoute simplement, le nouvel utilisateur stocké dans ``socket.assigns.user``, une map contenant un timestamp ``online_at``.
 
 On push tout ça dans la socket, et on met à jour notre état des présences !
 
