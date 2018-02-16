@@ -133,4 +133,30 @@ On se contentera ici d'afficher son email par exemple ! À vous de jouer, de la 
 
 La dernière balise est un petit lien de retour vers notre index des utilisateurs, pas de dark-magic ici ! :crystal_ball:
 
-On passe maintenant à l'édit, les procédures sont similaires 
+On passe maintenant à l'édit, les procédures sont similaires ! On commence donc par implémenter les fonctionnalités du controller :runner:
+
+```
+    def new(conn, _params) do
+      changeset = User.changeset(%User{}, %{})
+      render(conn, "new.html", changeset: changeset)
+    end
+```
+
+Cette fonction new fait appel au changeset d'un User, mais qu'est ce que cela signifie ? La grosse différence par rapport aux autres fonctions, c'est que l'on récupère la structure type d'un User ! C'est plutôt sympatique pour faire des validations de champs par exemple... :microscope:
+Et ce changeset récupéré, nous le poussons vers la page new.html !
+
+D'ailleurs cette fameuse page html elixifié, allons la créer !
+
+```
+  <h2>Create a new user</h2>
+
+  <%= render "form.html", changeset: @changeset, action: user_path(@conn, :create) %>
+
+  <%= link "Let's go back !", to: user_path(@conn, :index) %>
+```
+
+Alors, qu'est ce que l'on comprends de cette page ? :raising_hand:
+
+- Nous demandons un rendu d'un formulaire en lui passant le changeset et en précisant que l'action sera un appel à :create !
+- Très bien Brigitte ! Nous verrons par la suite ce à quoi ``action`` fait référence !
+
