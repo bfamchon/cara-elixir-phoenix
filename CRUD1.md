@@ -17,7 +17,7 @@ Côté ``lib/chien/user.ex``, on observe le schema User mais surtout la [fonctio
 
 Lancez la commande ecto pour migrer vos changements en base, et on part insérer notre premier utilisateur à l'aide du mix interactif !
 
-Comme présenté dans le talk introductif, la commande ``iex -S mix phx.server`` va lancer un shell interractif en prenant compte vos sources compilées !
+Comme présenté dans le talk introductif, la commande ``iex -S mix phx.server`` va lancer un shell interractif !
 
 Commençons par définir quelques alias afin d'y accéder plus facilement dans nos commandes:
 ``alias Chien.Repo`` & ``alias Chien.User``
@@ -26,57 +26,52 @@ Essayons de récupérer l'ensemble de nos utilisateurs grâce à: ``Repo.all(Use
 
 ``Repo.insert(%User{email: "denis.brogniart@kohlant.ah", password: "cabane"})``
 
-Si tu es jeune, beau, et intéréssé par Ecto, tu peux allez te renseigner sur les merveilleuses méthodes de ton repository préféré [ici](https://hexdocs.pm/ecto/Ecto.Repo.html)
-
 ***Maintenant, ce serait bien d'avoir un contrôleur pour servir d'intermédiaire entre les différentes briques, non ?***
 
-Allons y ! On crée le fichier ``lib/chien_web/controler/user_controller.ex`` :computer:
+Allons y ! On créer le fichier ``lib/chien_web/controler/user_controller.ex`` :computer:
 
-```elixir
+``
 defmodule ChienWeb.UserController do
-    use ChienWeb, :controller
+    use ChienrWeb, :controller
     alias Chien.User
     alias Chien.Repo
 end
-```
+``
+
+Puis celui correspondant à notre vue: 
+// TODO pas trop compris à quoi il servait...
+
+``
+defmodule ChienWeb.UserView do
+    use ChienWeb, :view
+end
+``
 
 Dans ce controller, ajoutons le point d'entrée principal qui listera tous les utilisateurs:
 
-```elixir
+``
     def index(conn, _params) do
       users = Repo.all(User)
       render(conn, "index.html", users: users)
     end
-```
+``
 
-Nous n'avons pas encore routé ce chemin... Allons faire un tour dans le fichier ``lib/chien_web/router.ex`` pour ajouter notre ressource User :
+Nous n'avons pas encore routé ce chemin... Allons faire un tour dans le fichier ``lib/chien_web/router.ex`` pour ajouter notre ressource supplémentaire:
 
-```elixir
+``
   scope "/", ChienWeb do
     ...
     resources "/users", UserController
     ...
   end
-```
+``
 
-Nous avons été assez impréssioné par le fait qu'une simple ligne resources puisse implicitement déclarer une multitude d'endpoints pour notre router n'hésitez pas à utiliser ``mix phx.routes`` pour les visualiser !
+Nous avons été assez impréssioné par le fait qu'une simple ligne resources puisse implicitement déclaré une multitude d'endpoints pour notre router: ``mix phx.routes`` pour y visualiser !
 
-
-Ajoutons maintenant une page permettant de gérer nos utilisateurs !
-
-Avec Phoenix, chaque pages sont liées à un module permettant de la manager. On pourra y mettre des méthodes que l'on appelera dans la page afin d'effectuer différents traitements.
-Mais nous, on utilise Javascript ! Nous devons tout de même lier notre page à ce module, mais nous le laisserons vide.
-Rendez-vous dans ``chien_web/views`` et créez le module suivant (comme pour le controller, il faudra le déclarer en temps que view)
-```elixir
-defmodule ChienWeb.UserView do
-    use ChienWeb, :view
-end
-```
-Il faut maintenant lui associer une page ! Allons créer le fichier ``lib/chien_web/templates/user/index.html.eex`` !
-Vous l'avez peut être déjà remarqué grâce aux pages générées, mais votre view sera liée à votre "Groupe de page" situé dans le dossier ``lib/chien_web/templates/user`` grâce à son nom !
+Actuellement si vous lancez un ``localhost:4000/users``, Phoenix vous dira qu'il manque un index.html pour l'UserView... Allons créer le fichier ``lib/chien_web/templates/user/index.html.eex`` !
 
 À remplir avec:
-```html
+```
 <h2>List of users</h2>
 
 <table class="table">
@@ -106,14 +101,13 @@ Vous l'avez peut être déjà remarqué grâce aux pages générées, mais votre
 <%= link "New user", to: user_path(@conn, :new) %>
 ```
 
-On vous donne en avance les fonctionnalités à implémenter par rapport aux balises ``<%= link %>``. Rien de sorcier là non plus, on boucle sur les utilisateurs de notre ``@conn`` & on met à dispo 4 liens qui vont diriger vers le ``user_path`` (/users), en y ajoutant les spécificités pour la navigation :
+On vous donne en avance les fonctionnalités à implémenter par rapport aux balises ``<%= link %>``. Rien de sorcier là non plus, on boucle sur les utilisateurs de notre ``@conn`` & on met à dispo 4 liens qui vont diriger vers le ``user_path`` (/users), en y ajoutant les spécificités pour la navigation:
 - :show (/users/:id),
 - :edit (/users/:id/edit),
 - :new (/users/new)
 - :delete qui se fait ici en inline, on précise la méthode appelée au clic qui sera :delete, et on ouvre un alert de confirmation ``[confirm: "Are you sure?"]``
 
-
-Allons y, retournons dans le ``user_controller`` pour ajouter la fonction show ! D'ailleurs j'suis sûr qu'avec tout ce que l'on vous a expliqué, vous pouvez y faire seul !
+Allons y, retournons dans le ``user_controller`` pour ajouter la fonction show ! D'ailleurs j'suis sûr qu'avez tout ce que l'on vous a expliqué, vous pouvez y faire seul !
 
 **Tips:**
 - À l'image d'index, cette fonction prend 2 paramètres: la connexion & la map clef valeur id (vous en avez déjà fait dans le ``room_channel.ex``, quand il fallait gérer les messages!)
@@ -122,7 +116,7 @@ Allons y, retournons dans le ``user_controller`` pour ajouter la fonction show !
 
 Très bien, en bon expert Phoenix, vous avez remarqué que cette page n'existe pas encore... Vous vous souvenez du dossier ``user`` dans les templates ? Ajoutez y donc un nouveau fichier ``show.html.eex``
 
-```html
+```
 <h2>Show user</h2>
 
 <ul>
@@ -135,13 +129,13 @@ Très bien, en bon expert Phoenix, vous avez remarqué que cette page n'existe p
 <%= link "Let's go back !", to: user_path(@conn, :index) %>
 ```
 
-On se contentera ici d'afficher son email par exemple ! À vous de jouer ! Récupérez le paramètres ! Facile, j'en ai déjà fait pour la toute première partie !
+On se contentera ici d'afficher son email par exemple ! À vous de jouer, de la récupération de paramètres dans la connexion ? Facile, j'en ai déjà fait pour la toute première partie !
 
 La dernière balise est un petit lien de retour vers notre index des utilisateurs, pas de dark-magic ici ! :crystal_ball:
 
 On passe maintenant à l'édit, les procédures sont similaires ! On commence donc par implémenter les fonctionnalités du controller :runner:
 
-```elixir
+```
     def new(conn, _params) do
       changeset = User.changeset(%User{}, %{})
       render(conn, "new.html", changeset: changeset)
@@ -153,7 +147,7 @@ Et ce changeset récupéré, nous le poussons vers la page new.html !
 
 D'ailleurs cette fameuse page html elixifié, allons la créer !
 
-```html
+```
   <h2>Create a new user</h2>
 
   <%= render "form.html", changeset: @changeset, action: user_path(@conn, :create) %>
@@ -165,4 +159,49 @@ Alors, qu'est ce que l'on comprends de cette page ? :raising_hand:
 
 - Nous demandons un rendu d'un formulaire en lui passant le changeset et en précisant que l'action sera un appel à :create !
 - Très bien Brigitte ! Nous verrons par la suite ce à quoi ``action`` fait référence !
+
+Voici à quoi ressemble le fichier ``form.html.eex`` !
+```
+<%= form_for @changeset, @action, fn f -> %>
+  <%= if @changeset.action do %>
+    <div class="alert alert-danger">
+      <p>Oops, something went wrong! Please check the errors below.</p>
+    </div>
+  <% end %>
+
+  <div class="form-group">
+    <%= label f, :email, class: "control-label" %>
+    <%= email_input f, :email, class: "form-control" %>
+    <%= error_tag f, :email %>
+  </div>
+
+  <div class="form-group">
+    <%= label f, :password, class: "control-label" %>
+    <%= password_input f, :password, class: "form-control" %>
+    <%= error_tag f, :password %>
+  </div>
+
+  <div class="form-group">
+    <%= submit "Submit", class: "btn btn-primary" %>
+  </div>
+<% end %>
+```
+
+Le bout de code html le "plus compliqué" auquel nous allons avoir affaire, analysons le ensemble !
+
+``form_for`` & ``@changeset`` font en fait référence à notre donnée, un utilisateur ici. Dans la page précédente, nous avons indiqué l'action lors du rendu de notre page... On le retrouve ici avec le tag``@action``
+si changeset vient avec une erreur spécifique, alors on fait le traitement
+
+
+
+
+
+
+
+
+
+
+
+
+
 
