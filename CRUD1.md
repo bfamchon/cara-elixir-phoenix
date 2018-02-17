@@ -163,7 +163,7 @@ D'ailleurs cette fameuse page html elixifié, allons la créer !
 Alors, qu'est ce que l'on comprends de cette page ? :raising_hand:
 Nous demandons un rendu de la page form.html et nous ajoutons dans le scope le changeset et l'action :create !
 
-Mais une seconde, nous n'avons aucune page form.html !? Vous avez compris la prochaine étape (sauf peut être un ou deux teubé, oui Mustapha, je parles de toi).
+Mais une seconde, nous n'avons aucune page form.html !? Vous avez compris la prochaine étape (sauf peut être un ou deux, oui Mustapha, je parles de toi).
 
 Créer la page suivante (vous devriez savoir ou la placer) :
 ```html
@@ -192,3 +192,25 @@ Créer la page suivante (vous devriez savoir ou la placer) :
 <% end %>
 ```
 Vous devriez être capable de comprendre la page tout seul, pour toute question, appelez nous ! 
+
+Nous souhaitons donc utiliser la méthode create ! Il faut bien sûre la créer dans notre User_controller !
+Ajoutez donc :  
+```elixir
+    def create(conn, %{"user" => user_params}) do
+      changeset = User.changeset(%User{}, user_params)
+
+      case Repo.insert(changeset) do
+        {:ok, _user} ->
+          conn
+          |> put_flash(:info, "User created successfully.")
+          |> redirect(to: user_path(conn, :index))
+        {:error, changeset} ->
+          render(conn, "new.html", changeset: changeset)
+      end
+    end
+```
+Mais qu'est-ce que c'est que ce code ? Une explication s'impose ! Tout d'abord on récupère un changeSet à partir de l'utilisateur passé en paramètre, un changeSet est une structure représentant les modifications à effectuer dans la base de données. Ensuite, nous insérons le changeSet en base et traitons la réponse. Commençons par le cas simple :error nous redirigera vers new.html en alimentant changeset, si vous avez bien analysé le code vous observez qu'un "Ah !" apparait dans ce cas !   
+Le cas :ok, vous pouvez voir la programmation fonctionnelle dans toute sa splendeur ! Nous associons dans le flash la clef :info et le message "User created successfully", le flash est simplement une zone mémoire "tampon" stockée en session qui quand le message sera consommé, sera supprimé. Pour finir, la conn retournée par la méthode put_flash est utilisé pour rediriger vers l'index.    
+Félicitations, vous pouvez insérer votre utilisateur en base !    
+
+
