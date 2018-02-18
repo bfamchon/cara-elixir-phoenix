@@ -230,37 +230,55 @@ Passons maintenant à l'update ! L'avantage avec un formulaire d'édition, c'est
 ```
 Donc n'oubliez pas, il faudra avoir accès à l'id de l'utilisateur, le fournir à notre page d'edition serai une bonne idée !
 
-Si vous n'y arrivez vraiment pas, allez voir plus bas !
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-Allez Ludo essai vraiment de le faire avant d'allez voir la solution...
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
+Si vous n'y arrivez vraiment pas, allez voir plus bas !     
+|     
+|     
+|     
+|     
+|     
+|     
+|     
+|     
+|     
+|     
+|     
+|     
+|     
+|     
+|     
+|     
+|     
+|     
+|     
+|     
+|     
+|     
+|     
+|     
+|     
+|     
+Allez Ludo essai vraiment de le faire avant d'allez voir la solution...     
+|     
+|     
+|     
+|     
+|     
+|     
+|     
+|     
+|     
+|     
+|     
+|     
+|     
+|     
+|     
+|     
+|     
+|     
+|     
+|     
+|     
 ```elixir
  def edit(conn, %{"id" => id}) do
       user = Repo.get!(User, id)
