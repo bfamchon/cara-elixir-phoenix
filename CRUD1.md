@@ -213,4 +213,72 @@ Mais qu'est-ce que c'est que ce code ? Une explication s'impose ! Tout d'abord o
 Le cas :ok, vous pouvez voir la programmation fonctionnelle dans toute sa splendeur ! Nous associons dans le flash la clef :info et le message "User created successfully", le flash est simplement une zone mémoire "tampon" stockée en session qui quand le message sera consommé, sera supprimé. Pour finir, la conn retournée par la méthode put_flash est utilisé pour rediriger vers l'index.    
 Félicitations, vous pouvez insérer votre utilisateur en base !    
 
+Passons maintenant à l'update ! L'avantage avec un formulaire d'édition, c'est que c'est que c'est le même que celui de création avec une autre action. Je penses que vous êtes capable de créer la page edit.html.eex correspondant à notre souhait ainsi que la méthode edit dans le controlleur seul ! Dans la page que vous créerai, nous souhaitons accéder à l'action suivante :
+```elixir
+	def update(conn, %{"id" => id, "user" => user_params}) do
+      user = Repo.get!(User, id)
+      changeset = User.changeset(user, user_params)
+      case Repo.update(changeset) do
+        {:ok, user} ->
+          conn
+          |> put_flash(:info, "User updated successfully.")
+          |> redirect(to: user_path(conn, :show, user))
+        {:error, changeset} ->
+          render(conn, "edit.html", user: user, changeset: changeset)
+      end
+  	end
+```
+Donc n'oubliez pas, il faudra avoir accès à l'id de l'utilisateur, le fournir à notre page d'edition serai une bonne idée !
 
+Si vous n'y arrivez vraiment pas, allez voir plus bas !
+|
+|
+|
+|
+|
+|
+|
+|
+|
+|
+|
+|
+|
+|
+|
+|
+|
+Allez Ludo essai vraiment de le faire avant d'allez voir la solution...
+|
+|
+|
+|
+|
+|
+|
+|
+|
+|
+|
+|
+```elixir
+ def edit(conn, %{"id" => id}) do
+      user = Repo.get!(User, id)
+      changeset = User.changeset(user)
+      render(conn, "edit.html", user: user, changeset: changeset)
+  	end   
+```
+```html
+<h2>Edit user</h2>
+
+<%= render "form.html", changeset: @changeset,
+                        action: user_path(@conn, :update, @user) %>
+
+<%= link "Back", to: user_path(@conn, :index) %>
+```
+
+Pour finir notre beau CRUD, il faut la méthode delete ! Et ce coup-ci on ne vous aidera pas ! Allez y et vous pourrez vous vanter d'avoir finis le TP !
+
+N'oubliez pas de mettre le plus de points possible lorsque vous recevrez le mail :)
+
+PS : Francis I <3 U
