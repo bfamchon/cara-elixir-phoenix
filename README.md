@@ -58,7 +58,7 @@ Justement, nous allons utiliser le connecteur sqlite3, plus adapté pour notre u
     ]
   end
 ```
-Et lancez un ``mix depts.get`` pour récupérer le connecteur sqlite ! Dernière petite config à changer, dans le fichier ``config/dev.exs``, remplacez la configuration par défaut:
+Et lancez un ``mix deps.get`` pour récupérer le connecteur sqlite ! Dernière petite config à changer, dans le fichier ``config/dev.exs``, remplacez la configuration par défaut:
 
 ```
 # Configure your database
